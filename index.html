@@ -12,7 +12,8 @@
   --ink:#12161f; --paper:#f6f5f1; --panel:#ffffff; --line:#e7e5df;
   --muted:#8a8d97; --teal:#0f6f5c; --teal-soft:#e3f2ee;
   --amber:#c9781f; --amber-soft:#faecd9; --clay:#b5482b; --clay-soft:#f7e6e0;
-  --ink-soft:#eef0f4; --shadow: 0 1px 2px rgba(18,22,31,0.05), 0 4px 14px rgba(18,22,31,0.06);
+  --ink-soft:#eef0f4; --gold:#b8860b; --gold-soft:#faf0d9;
+  --shadow: 0 1px 2px rgba(18,22,31,0.05), 0 4px 14px rgba(18,22,31,0.06);
 }
 *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
 html,body{ height:100%; }
@@ -30,7 +31,7 @@ h1{ font-family:'Sora'; font-size:19px; font-weight:700; margin-bottom:14px; }
 .grid-top{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
 .stat{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
 .stat .stripe{ position:absolute; left:0; top:0; bottom:0; width:4px; }
-.stat .num{ font-family:'Sora'; font-size:21px; font-weight:800; }
+.stat .num{ font-family:'Sora'; font-size:19px; font-weight:800; }
 .stat .unit{ font-size:10px; color:var(--muted); font-weight:600; margin-left:3px; }
 .stat .label{ margin-top:6px; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; }
 
@@ -45,17 +46,28 @@ h1{ font-family:'Sora'; font-size:19px; font-weight:700; margin-bottom:14px; }
 .plist li{ display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px dashed var(--line); font-size:13px; }
 .plist li:last-child{ border-bottom:none; padding-bottom:0;}
 .plist .warn{ color:var(--clay); }
+.plist .good{ color:var(--teal); }
 .plist .v{ font-family:'Sora'; font-weight:700; font-size:13.5px; }
+
+.profit-panel{ background:linear-gradient(135deg, var(--ink), #232a3a); color:#fff; }
+.profit-panel h3{ color:#fff; }
+.profit-panel .plist li{ border-bottom-color:rgba(255,255,255,.12); }
+.profit-panel .plist span:first-child{ color:#b8bcc6; }
+.profit-panel .v{ color:#fff; }
+.profit-panel .v.big{ font-size:22px; color:#4ade80; }
 
 .donut-wrap{ display:flex; align-items:center; gap:14px; margin-top:6px; }
 .donut-wrap canvas{ width:76px !important; height:76px !important; }
 .donut-label{ font-size:11.5px; color:var(--muted); }
 .donut-label b{ display:block; font-family:'Sora'; font-size:18px; color:var(--ink); font-weight:800; }
 
-.card-row{ display:flex; align-items:center; justify-content:space-between; padding:12px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; }
+.card-row{ display:flex; align-items:center; gap:11px; padding:12px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; }
 .card-row:last-child{ margin-bottom:0; }
+.card-row .thumb{ width:44px; height:44px; border-radius:9px; object-fit:cover; flex-shrink:0; background:var(--ink-soft); display:flex; align-items:center; justify-content:center; font-size:19px; }
+.card-row .info{ flex:1; min-width:0; }
 .card-row .ttl{ font-weight:600; font-size:13.5px; }
 .card-row .sub{ font-size:11.5px; color:var(--muted); margin-top:2px; }
+.card-row .right{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
 .badge-status{ font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:capitalize; white-space:nowrap; }
 .st-draft{ background:var(--ink-soft); color:#555; }
 .st-ordered, .st-confirmed{ background:var(--teal-soft); color:var(--teal); }
@@ -71,13 +83,20 @@ h1{ font-family:'Sora'; font-size:19px; font-weight:700; margin-bottom:14px; }
 select, input{ font-family:'Inter'; font-size:14px; padding:9px 11px; border:1px solid var(--line); border-radius:8px; background:#fff; width:100%; }
 .form-row{ margin-bottom:11px; display:flex; flex-direction:column; gap:5px; }
 .form-row label{ font-size:11.5px; color:var(--muted); font-weight:600; }
+.form-two{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .line-item-row{ display:flex; gap:6px; margin-bottom:7px; align-items:center; }
 .line-item-row select{ flex:2; }
 .line-item-row input{ flex:1; }
 
+.img-picker{ display:flex; align-items:center; gap:10px; }
+.img-preview{ width:56px; height:56px; border-radius:10px; object-fit:cover; background:var(--ink-soft); flex-shrink:0; }
+.img-picker label.btn{ display:inline-block; }
+.img-picker input[type=file]{ display:none; }
+
 .modal-backdrop{ position:fixed; inset:0; background:rgba(18,22,31,.45); display:flex; align-items:flex-end; justify-content:center; z-index:50; }
-.modal{ background:#fff; border-radius:16px 16px 0 0; padding:20px; width:100%; max-width:600px; max-height:85vh; overflow-y:auto; }
+.modal{ background:#fff; border-radius:16px 16px 0 0; padding:20px; width:100%; max-width:600px; max-height:88vh; overflow-y:auto; }
 .modal h3{ font-family:'Sora'; margin-bottom:14px; font-size:16px; }
+.modal .section-label{ font-size:11.5px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:.05em; margin:14px 0 8px; }
 .modal-actions{ display:flex; gap:8px; margin-top:16px; }
 .modal-actions .btn{ flex:1; padding:11px; font-size:13.5px; }
 
@@ -104,35 +123,68 @@ select, input{ font-family:'Inter'; font-size:14px; padding:9px 11px; border:1px
 
 <script>
 // ---------------- local "database" (phone storage) ----------------
-const DB_KEY = 'stockwell_db_v1';
+const DB_KEY = 'stockwell_db_v2';
+const OLD_DB_KEY = 'stockwell_db_v1';
 
 function seedDB(){
   return {
     items: [
-      { id:1, name:'Wool Cardigan – Camel', sku:'WC-001', category:'Apparel', quantityInHand:171, lowStockThreshold:20, unitPrice:24.5 },
-      { id:2, name:'Denim Romper – Sprout', sku:'DR-014', category:'Apparel', quantityInHand:45, lowStockThreshold:15, unitPrice:18.0 },
-      { id:3, name:'Canvas Cap – Rust', sku:'CC-007', category:'Accessories', quantityInHand:38, lowStockThreshold:25, unitPrice:9.0 },
-      { id:4, name:'Cotton Socks – 3 Pack', sku:'CS-022', category:'Accessories', quantityInHand:12, lowStockThreshold:20, unitPrice:6.5 }
+      { id:1, name:'Wool Cardigan – Camel', sku:'WC-001', category:'Apparel', quantityInHand:171, lowStockThreshold:20, costPrice:15.0, adCost:1.5, sellingPrice:24.5, imageDataUrl:null },
+      { id:2, name:'Denim Romper – Sprout', sku:'DR-014', category:'Apparel', quantityInHand:45, lowStockThreshold:15, costPrice:11.0, adCost:1.0, sellingPrice:18.0, imageDataUrl:null },
+      { id:3, name:'Canvas Cap – Rust', sku:'CC-007', category:'Accessories', quantityInHand:38, lowStockThreshold:25, costPrice:5.0, adCost:0.5, sellingPrice:9.0, imageDataUrl:null },
+      { id:4, name:'Cotton Socks – 3 Pack', sku:'CS-022', category:'Accessories', quantityInHand:12, lowStockThreshold:20, costPrice:3.5, adCost:0.3, sellingPrice:6.5, imageDataUrl:null }
     ],
     purchaseOrders: [
       { id:1, poNumber:'PO-1001', supplier:'Berbera Textiles', date:'2026-07-01', status:'ordered',
         lines:[ {itemId:1, qty:200, cost:15.0}, {itemId:4, qty:100, cost:3.5} ] }
     ],
     salesOrders: [
-      { id:1, soNumber:'SO-2001', channel:'Direct Sales', date:'2026-07-10', status:'confirmed', lines:[{itemId:1, qty:50, price:29.0}] },
-      { id:2, soNumber:'SO-2002', channel:'Marketplace', date:'2026-07-11', status:'packed', lines:[{itemId:2, qty:6, price:22.0}] },
-      { id:3, soNumber:'SO-2003', channel:'Marketplace', date:'2026-07-12', status:'shipped', lines:[{itemId:3, qty:10, price:12.0}] }
+      { id:1, soNumber:'SO-2001', channel:'Direct Sales', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-10', status:'confirmed', lines:[{itemId:1, qty:50, price:29.0}] },
+      { id:2, soNumber:'SO-2002', channel:'Marketplace', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-11', status:'packed', lines:[{itemId:2, qty:6, price:22.0}] },
+      { id:3, soNumber:'SO-2003', channel:'Marketplace', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-12', status:'shipped', lines:[{itemId:3, qty:10, price:12.0}] }
     ],
     nextIds: { item:5, purchaseOrder:2, salesOrder:4 }
   };
 }
 
+function migrateFromV1(){
+  const raw = localStorage.getItem(OLD_DB_KEY);
+  if(!raw) return null;
+  try{
+    const old = JSON.parse(raw);
+    old.items.forEach(i=>{
+      i.costPrice = i.unitPrice || 0;
+      i.adCost = 0;
+      i.sellingPrice = i.unitPrice || 0;
+      i.imageDataUrl = null;
+      delete i.unitPrice;
+    });
+    old.salesOrders.forEach(o=>{
+      o.customerName = o.customerName || '';
+      o.customerPhone = o.customerPhone || '';
+      o.paymentNumber = o.paymentNumber || '';
+    });
+    return old;
+  }catch(e){ return null; }
+}
+
 function loadDB(){
   const raw = localStorage.getItem(DB_KEY);
-  if(!raw){ const seeded = seedDB(); saveDB(seeded); return seeded; }
-  try{ return JSON.parse(raw); } catch(e){ const seeded = seedDB(); saveDB(seeded); return seeded; }
+  if(raw){
+    try{ return JSON.parse(raw); } catch(e){ /* fall through */ }
+  }
+  const migrated = migrateFromV1();
+  const fresh = migrated || seedDB();
+  saveDB(fresh);
+  return fresh;
 }
-function saveDB(db){ localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+function saveDB(db){
+  try{
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+  }catch(e){
+    alert('Kaydintu way fashilantay — waxaa suurtagal ah in taleefanka storage-kiisu buuxsamay sawirada. Isku day inaad sawirro yar yar isticmaasho.');
+  }
+}
 
 let db = loadDB();
 let currentView = 'dashboard';
@@ -148,8 +200,32 @@ document.querySelectorAll('.bn-item').forEach(nav=>{
   });
 });
 
-function money(n){ return '$' + Number(n).toFixed(2); }
+// ---------------- helpers ----------------
+function money(n){
+  const v = Math.round(Number(n)||0);
+  return 'Sh ' + v.toLocaleString('en-US');
+}
 function qtyOf(order){ return order.lines.reduce((s,l)=>s+Number(l.qty||0),0); }
+
+function resizeImageFile(file, maxSize){
+  return new Promise((resolve)=>{
+    const reader = new FileReader();
+    reader.onload = (e)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        let w = img.width, h = img.height;
+        if(w > h){ if(w > maxSize){ h = Math.round(h * maxSize / w); w = maxSize; } }
+        else { if(h > maxSize){ w = Math.round(w * maxSize / h); h = maxSize; } }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.72));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 function render(){
   if(currentView==='dashboard') renderDashboard();
@@ -171,10 +247,23 @@ function renderDashboard(){
   const allItems = db.items.length;
   const activePct = allItems===0?0:Math.round(((allItems-lowStockItems)/allItems)*100);
 
+  // profit: based on completed sales (shipped or invoiced) — stock has already left the shelf
+  const completedOrders = db.salesOrders.filter(o=>['shipped','invoiced'].includes(o.status));
+  let revenue = 0, cost = 0;
+  completedOrders.forEach(o=>{
+    o.lines.forEach(l=>{
+      const item = db.items.find(i=>i.id===l.itemId);
+      const qty = Number(l.qty)||0;
+      revenue += (Number(l.price)||0) * qty;
+      if(item){ cost += ((Number(item.costPrice)||0) + (Number(item.adCost)||0)) * qty; }
+    });
+  });
+  const profit = revenue - cost;
+
   const soldByItem = {};
   db.salesOrders.forEach(o=>o.lines.forEach(l=>{ soldByItem[l.itemId]=(soldByItem[l.itemId]||0)+Number(l.qty||0); }));
   const topSelling = Object.entries(soldByItem).map(([id,sold])=>{
-    const item = db.items.find(i=>i.id===Number(id)); return item?{name:item.name, sold}:null;
+    const item = db.items.find(i=>i.id===Number(id)); return item?{name:item.name, sold, img:item.imageDataUrl}:null;
   }).filter(Boolean).sort((a,b)=>b.sold-a.sold).slice(0,4);
 
   content.innerHTML = `
@@ -185,6 +274,16 @@ function renderDashboard(){
       <div class="stat"><div class="stripe" style="background:var(--amber)"></div><div class="num">${toBeDelivered}<span class="unit">Orders</span></div><div class="label">To be Delivered</div></div>
       <div class="stat"><div class="stripe" style="background:#4b5563"></div><div class="num">${toBeInvoiced}<span class="unit">Qty</span></div><div class="label">To be Invoiced</div></div>
     </div>
+
+    <div class="panel profit-panel">
+      <div class="panel-head"><h3>Faa'iidada (Profit)</h3></div>
+      <ul class="plist">
+        <li><span>Dakhliga (Revenue)</span><span class="v">${money(revenue)}</span></li>
+        <li><span>Kharashka (Cost + Ads)</span><span class="v">${money(cost)}</span></li>
+        <li><span>Faa'iidada saafiga ah</span><span class="v big">${money(profit)}</span></li>
+      </ul>
+    </div>
+
     <div class="panel">
       <div class="panel-head"><h3>Product Details</h3></div>
       <ul class="plist">
@@ -217,16 +316,26 @@ function renderDashboard(){
 }
 
 // ---------------- ITEMS ----------------
+function itemThumb(item){
+  return item.imageDataUrl
+    ? `<img class="thumb" src="${item.imageDataUrl}">`
+    : `<div class="thumb">📦</div>`;
+}
+
 function renderItems(){
   fab.style.display = 'flex';
-  fab.onclick = openAddItemModal;
+  fab.onclick = ()=>openAddItemModal();
   content.innerHTML = `<h1>Items</h1>` + (db.items.length ? db.items.map(i=>`
     <div class="card-row">
-      <div>
+      ${itemThumb(i)}
+      <div class="info">
         <div class="ttl">${i.name} ${i.quantityInHand<=i.lowStockThreshold ? '<span class="badge-status st-shipped">low</span>' : ''}</div>
-        <div class="sub">${i.sku} · Qty: ${i.quantityInHand} · ${money(i.unitPrice)}</div>
+        <div class="sub">${i.sku||''} · Qty: ${i.quantityInHand}</div>
+        <div class="sub">Iibsi: ${money(i.costPrice)} + Xayeysiin: ${money(i.adCost)} → Iib: ${money(i.sellingPrice)}</div>
       </div>
-      <button class="btn btn-ghost" onclick="deleteItem(${i.id})">Delete</button>
+      <div class="right">
+        <button class="btn btn-ghost" onclick="deleteItem(${i.id})">Delete</button>
+      </div>
     </div>`).join('') : '<div class="panel" style="color:var(--muted); text-align:center;">No items yet — tap + to add one</div>');
 }
 
@@ -235,23 +344,48 @@ function openAddItemModal(){
   backdrop.className = 'modal-backdrop';
   backdrop.innerHTML = `
     <div class="modal">
-      <h3>Add item</h3>
-      <div class="form-row"><label>Name</label><input id="f-name"></div>
+      <h3>Ku dar alaab (Add item)</h3>
+      <div class="form-row">
+        <label>Sawirka (Photo)</label>
+        <div class="img-picker">
+          <img id="imgPreview" class="img-preview" src="">
+          <label class="btn btn-ghost">Dooro sawir
+            <input type="file" id="f-image" accept="image/*" capture="environment">
+          </label>
+        </div>
+      </div>
+      <div class="form-row"><label>Magaca alaabta (Name)</label><input id="f-name"></div>
       <div class="form-row"><label>SKU</label><input id="f-sku"></div>
-      <div class="form-row"><label>Category</label><input id="f-category" value="General"></div>
-      <div class="form-row"><label>Quantity in hand</label><input id="f-qty" type="number" value="0"></div>
-      <div class="form-row"><label>Low stock threshold</label><input id="f-low" type="number" value="10"></div>
-      <div class="form-row"><label>Unit price</label><input id="f-price" type="number" step="0.01" value="0"></div>
+      <div class="form-row"><label>Nooca (Category)</label><input id="f-category" value="General"></div>
+      <div class="form-two">
+        <div class="form-row"><label>Tirada (Qty in hand)</label><input id="f-qty" type="number" value="0"></div>
+        <div class="form-row"><label>Low stock threshold</label><input id="f-low" type="number" value="10"></div>
+      </div>
+      <div class="section-label">Qiimaha (Sh)</div>
+      <div class="form-two">
+        <div class="form-row"><label>Qiimaha ay igu fadhido (Cost)</label><input id="f-cost" type="number" step="0.01" value="0"></div>
+        <div class="form-row"><label>Qiimaha xayeysiinta (Ads)</label><input id="f-ad" type="number" step="0.01" value="0"></div>
+      </div>
+      <div class="form-row"><label>Qiimaha aan ku iibinayo (Selling price)</label><input id="f-price" type="number" step="0.01" value="0"></div>
       <div class="modal-actions">
         <button class="btn btn-ghost" id="cancelBtn">Cancel</button>
         <button class="btn btn-primary" id="saveBtn">Save</button>
       </div>
     </div>`;
   document.body.appendChild(backdrop);
+
+  let pendingImage = null;
+  backdrop.querySelector('#f-image').addEventListener('change', async (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    pendingImage = await resizeImageFile(file, 300);
+    backdrop.querySelector('#imgPreview').src = pendingImage;
+  });
+
   backdrop.querySelector('#cancelBtn').onclick = ()=>backdrop.remove();
   backdrop.querySelector('#saveBtn').onclick = ()=>{
     const name = backdrop.querySelector('#f-name').value.trim();
-    if(!name){ alert('Name is required'); return; }
+    if(!name){ alert('Magaca alaabta waa lagama maarmaan'); return; }
     db.items.push({
       id: db.nextIds.item++,
       name,
@@ -259,7 +393,10 @@ function openAddItemModal(){
       category: backdrop.querySelector('#f-category').value || 'General',
       quantityInHand: Number(backdrop.querySelector('#f-qty').value)||0,
       lowStockThreshold: Number(backdrop.querySelector('#f-low').value)||10,
-      unitPrice: Number(backdrop.querySelector('#f-price').value)||0
+      costPrice: Number(backdrop.querySelector('#f-cost').value)||0,
+      adCost: Number(backdrop.querySelector('#f-ad').value)||0,
+      sellingPrice: Number(backdrop.querySelector('#f-price').value)||0,
+      imageDataUrl: pendingImage
     });
     saveDB(db);
     backdrop.remove();
@@ -280,11 +417,11 @@ function renderPurchases(){
   fab.onclick = ()=>openOrderModal('purchase');
   content.innerHTML = `<h1>Purchase Orders</h1>` + (db.purchaseOrders.length ? db.purchaseOrders.map(po=>`
     <div class="card-row">
-      <div>
+      <div class="info">
         <div class="ttl">${po.poNumber} — ${po.supplier}</div>
         <div class="sub">${po.date} · Qty: ${qtyOf(po)}</div>
       </div>
-      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+      <div class="right">
         <span class="badge-status st-${po.status}">${po.status}</span>
         ${po.status!=='received' ? `<button class="btn btn-ghost" onclick="markReceived(${po.id})">Mark received</button>` : ''}
       </div>
@@ -312,12 +449,14 @@ function renderSales(){
   content.innerHTML = `<h1>Sales Orders</h1>` + (db.salesOrders.length ? db.salesOrders.map(so=>{
     const nextIdx = SO_FLOW.indexOf(so.status)+1;
     const next = SO_FLOW[nextIdx];
+    const customerLine = so.customerName ? `${so.customerName}${so.customerPhone ? ' · '+so.customerPhone : ''}` : so.channel;
     return `<div class="card-row">
-      <div>
-        <div class="ttl">${so.soNumber} — ${so.channel}</div>
+      <div class="info">
+        <div class="ttl">${so.soNumber} — ${customerLine}</div>
         <div class="sub">${so.date} · Qty: ${qtyOf(so)}</div>
+        ${so.paymentNumber ? `<div class="sub">Lacag: ${so.paymentNumber}</div>` : ''}
       </div>
-      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+      <div class="right">
         <span class="badge-status st-${so.status}">${so.status}</span>
         ${next ? `<button class="btn btn-ghost" onclick="advanceSo(${so.id}, '${next}')">Mark ${next}</button>` : ''}
       </div>
@@ -330,7 +469,8 @@ function advanceSo(id, status){
   if(!so) return;
   const oldStatus = so.status;
   so.status = status;
-  if(status==='packed' && !['packed','shipped','invoiced'].includes(oldStatus)){
+  // stock is deducted the moment an order becomes "shipped" (delivery)
+  if(status==='shipped' && oldStatus!=='shipped' && oldStatus!=='invoiced'){
     so.lines.forEach(line=>{
       const item = db.items.find(i=>i.id===line.itemId);
       if(item) item.quantityInHand = Math.max(0, item.quantityInHand - (Number(line.qty)||0));
@@ -343,12 +483,26 @@ function advanceSo(id, status){
 // ---------------- shared order modal ----------------
 function openOrderModal(kind){
   const isPO = kind==='purchase';
+  if(db.items.length===0){
+    alert('Ku dar ugu yaraan hal alaab ka hor intaadan order sameyn.');
+    return;
+  }
   const backdrop = document.createElement('div');
   backdrop.className = 'modal-backdrop';
   backdrop.innerHTML = `
     <div class="modal">
       <h3>${isPO?'New purchase order':'New sales order'}</h3>
-      <div class="form-row"><label>${isPO?'Supplier':'Channel'}</label><input id="f-party" value="${isPO?'':'Direct Sales'}"></div>
+      ${isPO ? `
+        <div class="form-row"><label>Supplier</label><input id="f-party" value=""></div>
+      ` : `
+        <div class="form-row"><label>Channel</label><input id="f-party" value="Direct Sales"></div>
+        <div class="section-label">Xogta Macmiilka (Customer)</div>
+        <div class="form-row"><label>Magaca macmiilka</label><input id="f-cust-name" placeholder="Tusaale: Faarax Cali"></div>
+        <div class="form-two">
+          <div class="form-row"><label>Lambarka teléfoonka</label><input id="f-cust-phone" placeholder="61xxxxxxx"></div>
+          <div class="form-row"><label>Lambarka lacag-bixinta</label><input id="f-cust-payment" placeholder="EVC / Zaad"></div>
+        </div>
+      `}
       <div class="form-row"><label>Date</label><input id="f-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
       <div class="form-row">
         <label>Line items</label>
@@ -366,16 +520,16 @@ function openOrderModal(kind){
     const row = document.createElement('div');
     row.className = 'line-item-row';
     row.innerHTML = `
-      <select class="line-item">${db.items.map(i=>`<option value="${i.id}">${i.name}</option>`).join('')}</select>
+      <select class="line-item">${db.items.map(i=>`<option value="${i.id}" data-price="${isPO?i.costPrice:i.sellingPrice}">${i.name}</option>`).join('')}</select>
       <input class="line-qty" type="number" placeholder="Qty" value="1" min="1">
-      <input class="line-price" type="number" placeholder="${isPO?'Cost':'Price'}" step="0.01" value="0">
+      <input class="line-price" type="number" placeholder="${isPO?'Cost':'Price'}" step="0.01" value="${isPO?db.items[0].costPrice:db.items[0].sellingPrice}">
     `;
+    const sel = row.querySelector('.line-item');
+    const priceInput = row.querySelector('.line-price');
+    sel.addEventListener('change', ()=>{
+      priceInput.value = sel.selectedOptions[0].dataset.price;
+    });
     backdrop.querySelector('#lineItems').appendChild(row);
-  }
-  if(db.items.length===0){
-    alert('Add at least one item first before creating an order.');
-    backdrop.remove();
-    return;
   }
   addLine();
   backdrop.querySelector('#addLineBtn').onclick = addLine;
@@ -402,6 +556,9 @@ function openOrderModal(kind){
         id: db.nextIds.salesOrder++,
         soNumber: `SO-${2000+db.nextIds.salesOrder}`,
         channel: party || 'Direct Sales',
+        customerName: backdrop.querySelector('#f-cust-name').value.trim(),
+        customerPhone: backdrop.querySelector('#f-cust-phone').value.trim(),
+        paymentNumber: backdrop.querySelector('#f-cust-payment').value.trim(),
         date, status:'draft', lines
       });
     }
