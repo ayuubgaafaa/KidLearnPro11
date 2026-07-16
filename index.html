@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Stockwell Pro — Inventory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -106,8 +107,8 @@ select, input{ font-family:'Inter'; font-size:14px; padding:9px 11px; border:1px
 
 <div class="topbar">
   <div class="mark">S</div>
-  <div class="name">Stockwell</div>
-  <div class="status"><div class="dot"></div>Saved on this phone</div>
+  <div class="name">Stockwell Pro</div>
+  <div class="status"><div class="dot"></div>Kaydsan</div>
 </div>
 
 <div class="content" id="content"></div>
@@ -115,56 +116,34 @@ select, input{ font-family:'Inter'; font-size:14px; padding:9px 11px; border:1px
 
 <div class="bottom-nav">
   <div class="bn-item active" data-view="dashboard"><span class="ic">📊</span>Dashboard</div>
-  <div class="bn-item" data-view="items"><span class="ic">📦</span>Items</div>
-  <div class="bn-item" data-view="purchases"><span class="ic">🛒</span>Purchases</div>
-  <div class="bn-item" data-view="sales"><span class="ic">🧾</span>Sales</div>
+  <div class="bn-item" data-view="items"><span class="ic">📦</span>Alaab</div>
+  <div class="bn-item" data-view="purchases"><span class="ic">🛒</span>Iibsi</div>
+  <div class="bn-item" data-view="sales"><span class="ic">🧾</span>Iib</div>
 </div>
 
 <script>
-// ---------------- local "database" (phone storage) ----------------
-const DB_KEY = 'stockwell_db_v2';
-const OLD_DB_KEY = 'stockwell_db_v1';
+// ---------------- Kaydka (localStorage) ----------------
+const DB_KEY = 'stockwell_pro_db';
 
 function seedDB(){
   return {
     items: [
-      { id:1, name:'Wool Cardigan – Camel', sku:'WC-001', category:'Apparel', quantityInHand:171, lowStockThreshold:20, costPrice:15.0, adCost:1.5, sellingPrice:24.5, imageDataUrl:null },
-      { id:2, name:'Denim Romper – Sprout', sku:'DR-014', category:'Apparel', quantityInHand:45, lowStockThreshold:15, costPrice:11.0, adCost:1.0, sellingPrice:18.0, imageDataUrl:null },
-      { id:3, name:'Canvas Cap – Rust', sku:'CC-007', category:'Accessories', quantityInHand:38, lowStockThreshold:25, costPrice:5.0, adCost:0.5, sellingPrice:9.0, imageDataUrl:null },
-      { id:4, name:'Cotton Socks – 3 Pack', sku:'CS-022', category:'Accessories', quantityInHand:12, lowStockThreshold:20, costPrice:3.5, adCost:0.3, sellingPrice:6.5, imageDataUrl:null }
+      { id:1, name:'Wool Cardigan – Camel', sku:'WC-001', category:'Apparel', quantityInHand:171, lowStockThreshold:20, costPrice:1500, adCost:150, sellingPrice:2450, imageDataUrl:null },
+      { id:2, name:'Denim Romper – Sprout', sku:'DR-014', category:'Apparel', quantityInHand:45, lowStockThreshold:15, costPrice:1100, adCost:100, sellingPrice:1800, imageDataUrl:null },
+      { id:3, name:'Canvas Cap – Rust', sku:'CC-007', category:'Accessories', quantityInHand:38, lowStockThreshold:25, costPrice:500, adCost:50, sellingPrice:900, imageDataUrl:null },
+      { id:4, name:'Cotton Socks – 3 Pack', sku:'CS-022', category:'Accessories', quantityInHand:12, lowStockThreshold:20, costPrice:350, adCost:30, sellingPrice:650, imageDataUrl:null }
     ],
     purchaseOrders: [
-      { id:1, poNumber:'PO-1001', supplier:'Berbera Textiles', date:'2026-07-01', status:'ordered',
-        lines:[ {itemId:1, qty:200, cost:15.0}, {itemId:4, qty:100, cost:3.5} ] }
+      { id:1, poNumber:'PO-1001', supplier:'Berbera Textiles', date:'2026-07-01', status:'received',
+        lines:[ {itemId:1, qty:200, cost:1500}, {itemId:4, qty:100, cost:350} ] }
     ],
     salesOrders: [
-      { id:1, soNumber:'SO-2001', channel:'Direct Sales', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-10', status:'confirmed', lines:[{itemId:1, qty:50, price:29.0}] },
-      { id:2, soNumber:'SO-2002', channel:'Marketplace', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-11', status:'packed', lines:[{itemId:2, qty:6, price:22.0}] },
-      { id:3, soNumber:'SO-2003', channel:'Marketplace', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-12', status:'shipped', lines:[{itemId:3, qty:10, price:12.0}] }
+      { id:1, soNumber:'SO-2001', channel:'Direct Sales', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-10', status:'shipped', lines:[{itemId:1, qty:50, price:2450}] },
+      { id:2, soNumber:'SO-2002', channel:'Marketplace', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-11', status:'packed', lines:[{itemId:2, qty:6, price:1800}] },
+      { id:3, soNumber:'SO-2003', channel:'Marketplace', customerName:'', customerPhone:'', paymentNumber:'', date:'2026-07-12', status:'shipped', lines:[{itemId:3, qty:10, price:900}] }
     ],
     nextIds: { item:5, purchaseOrder:2, salesOrder:4 }
   };
-}
-
-function migrateFromV1(){
-  const raw = localStorage.getItem(OLD_DB_KEY);
-  if(!raw) return null;
-  try{
-    const old = JSON.parse(raw);
-    old.items.forEach(i=>{
-      i.costPrice = i.unitPrice || 0;
-      i.adCost = 0;
-      i.sellingPrice = i.unitPrice || 0;
-      i.imageDataUrl = null;
-      delete i.unitPrice;
-    });
-    old.salesOrders.forEach(o=>{
-      o.customerName = o.customerName || '';
-      o.customerPhone = o.customerPhone || '';
-      o.paymentNumber = o.paymentNumber || '';
-    });
-    return old;
-  }catch(e){ return null; }
 }
 
 function loadDB(){
@@ -172,8 +151,7 @@ function loadDB(){
   if(raw){
     try{ return JSON.parse(raw); } catch(e){ /* fall through */ }
   }
-  const migrated = migrateFromV1();
-  const fresh = migrated || seedDB();
+  const fresh = seedDB();
   saveDB(fresh);
   return fresh;
 }
@@ -181,7 +159,7 @@ function saveDB(db){
   try{
     localStorage.setItem(DB_KEY, JSON.stringify(db));
   }catch(e){
-    alert('Kaydintu way fashilantay — waxaa suurtagal ah in taleefanka storage-kiisu buuxsamay sawirada. Isku day inaad sawirro yar yar isticmaasho.');
+    alert('Kaydinta way fashilantay — fadlan isku day inaad sawirro yar isticmaasho ama xoogaa kayd (storage) bannaysa.');
   }
 }
 
@@ -199,10 +177,10 @@ document.querySelectorAll('.bn-item').forEach(nav=>{
   });
 });
 
-// ---------------- helpers ----------------
+// ---------------- Caawiyeyaal ----------------
 function money(n){
   const v = Math.round(Number(n)||0);
-  return 'Sh ' + v.toLocaleString('en-US');
+  return 'KSh ' + v.toLocaleString('en-US');
 }
 function qtyOf(order){ return order.lines.reduce((s,l)=>s+Number(l.qty||0),0); }
 
@@ -233,7 +211,7 @@ function render(){
   else if(currentView==='sales') renderSales();
 }
 
-// ---------------- DASHBOARD ----------------
+// ---------------- DASHBOARD (Xisaab faa'iido) ----------------
 function renderDashboard(){
   fab.style.display = 'none';
   const toBePacked = db.salesOrders.filter(o=>o.status==='confirmed').reduce((s,o)=>s+qtyOf(o),0);
@@ -246,19 +224,26 @@ function renderDashboard(){
   const allItems = db.items.length;
   const activePct = allItems===0?0:Math.round(((allItems-lowStockItems)/allItems)*100);
 
-  // profit: based on completed sales (shipped or invoiced) — stock has already left the shelf
+  // Faa'iidada: kaliya iibka la soo saaray (shipped)
   const completedOrders = db.salesOrders.filter(o=>['shipped','invoiced'].includes(o.status));
-  let revenue = 0, cost = 0;
+  let revenue = 0, totalCost = 0, totalAdCost = 0;
   completedOrders.forEach(o=>{
     o.lines.forEach(l=>{
       const item = db.items.find(i=>i.id===l.itemId);
       const qty = Number(l.qty)||0;
-      revenue += (Number(l.price)||0) * qty;
-      if(item){ cost += ((Number(item.costPrice)||0) + (Number(item.adCost)||0)) * qty; }
+      const price = Number(l.price)||0;
+      if(item){
+        const cost = (Number(item.costPrice)||0) * qty;
+        const ad = (Number(item.adCost)||0) * qty;
+        revenue += price * qty;
+        totalCost += cost;
+        totalAdCost += ad;
+      }
     });
   });
-  const profit = revenue - cost;
+  const profit = revenue - totalCost - totalAdCost;
 
+  // Alaabta ugu iibka badan
   const soldByItem = {};
   db.salesOrders.forEach(o=>o.lines.forEach(l=>{ soldByItem[l.itemId]=(soldByItem[l.itemId]||0)+Number(l.qty||0); }));
   const topSelling = Object.entries(soldByItem).map(([id,sold])=>{
@@ -266,44 +251,45 @@ function renderDashboard(){
   }).filter(Boolean).sort((a,b)=>b.sold-a.sold).slice(0,4);
 
   content.innerHTML = `
-    <h1>Sales Activity</h1>
+    <h1>📊 Warbixin (Dashboard)</h1>
     <div class="grid-top">
-      <div class="stat"><div class="stripe" style="background:var(--teal)"></div><div class="num">${toBePacked}<span class="unit">Qty</span></div><div class="label">To be Packed</div></div>
-      <div class="stat"><div class="stripe" style="background:var(--clay)"></div><div class="num">${toBeShipped}<span class="unit">Orders</span></div><div class="label">To be Shipped</div></div>
-      <div class="stat"><div class="stripe" style="background:var(--amber)"></div><div class="num">${toBeDelivered}<span class="unit">Orders</span></div><div class="label">To be Delivered</div></div>
-      <div class="stat"><div class="stripe" style="background:#4b5563"></div><div class="num">${toBeInvoiced}<span class="unit">Qty</span></div><div class="label">To be Invoiced</div></div>
+      <div class="stat"><div class="stripe" style="background:var(--teal)"></div><div class="num">${toBePacked}<span class="unit">Qty</span></div><div class="label">La baakadaynayo</div></div>
+      <div class="stat"><div class="stripe" style="background:var(--clay)"></div><div class="num">${toBeShipped}<span class="unit">Orders</span></div><div class="label">La diri doono</div></div>
+      <div class="stat"><div class="stripe" style="background:var(--amber)"></div><div class="num">${toBeDelivered}<span class="unit">Orders</span></div><div class="label">La gaarsiin doono</div></div>
+      <div class="stat"><div class="stripe" style="background:#4b5563"></div><div class="num">${toBeInvoiced}<span class="unit">Qty</span></div><div class="label">La soo saari doono</div></div>
     </div>
 
     <div class="panel profit-panel">
-      <div class="panel-head"><h3>Faa'iidada (Profit)</h3></div>
+      <div class="panel-head"><h3>💰 Faa'iidada (Profit)</h3></div>
       <ul class="plist">
         <li><span>Dakhliga (Revenue)</span><span class="v">${money(revenue)}</span></li>
-        <li><span>Kharashka (Cost + Ads)</span><span class="v">${money(cost)}</span></li>
+        <li><span>Qiimaha alaabta (Cost)</span><span class="v">${money(totalCost)}</span></li>
+        <li><span>Qiimaha xayeysiinta (Ads)</span><span class="v">${money(totalAdCost)}</span></li>
         <li><span>Faa'iidada saafiga ah</span><span class="v big">${money(profit)}</span></li>
       </ul>
     </div>
 
     <div class="panel">
-      <div class="panel-head"><h3>Product Details</h3></div>
+      <div class="panel-head"><h3>📦 Xaaladda alaabta</h3></div>
       <ul class="plist">
-        <li><span class="warn">Low Stock Items</span><span class="v warn">${lowStockItems}</span></li>
-        <li><span>All Items</span><span class="v">${allItems}</span></li>
+        <li><span class="warn">Alaabta hoose (Low Stock)</span><span class="v warn">${lowStockItems}</span></li>
+        <li><span>Wadarta alaabta</span><span class="v">${allItems}</span></li>
       </ul>
       <div class="donut-wrap">
         <canvas id="activeDonut"></canvas>
-        <div class="donut-label"><b>${activePct}%</b>Active items in stock</div>
+        <div class="donut-label"><b>${activePct}%</b>Alaabta ku jirta</div>
       </div>
     </div>
     <div class="panel">
-      <div class="panel-head"><h3>Inventory Summary</h3></div>
+      <div class="panel-head"><h3>📋 Kooban (Summary)</h3></div>
       <ul class="plist">
-        <li><span>Quantity in Hand</span><span class="v">${quantityInHand.toLocaleString()}</span></li>
-        <li><span>Quantity to be Received</span><span class="v">${quantityToBeReceived}</span></li>
+        <li><span>Tirada gacanta ku jirta</span><span class="v">${quantityInHand.toLocaleString()}</span></li>
+        <li><span>Tirada la sugayo</span><span class="v">${quantityToBeReceived}</span></li>
       </ul>
     </div>
     <div class="panel">
-      <div class="panel-head"><h3>Top Selling Items</h3></div>
-      <ul class="plist">${topSelling.length ? topSelling.map(t=>`<li><span>${t.name}</span><span class="v">${t.sold} sold</span></li>`).join('') : '<li><span style="color:var(--muted)">No sales yet</span></li>'}</ul>
+      <div class="panel-head"><h3>🏆 Alaabta ugu iibka badan</h3></div>
+      <ul class="plist">${topSelling.length ? topSelling.map(t=>`<li><span>${t.name}</span><span class="v">${t.sold} la iibiyay</span></li>`).join('') : '<li><span style="color:var(--muted)">Iib ma jiro</span></li>'}</ul>
     </div>
   `;
 
@@ -314,7 +300,7 @@ function renderDashboard(){
   });
 }
 
-// ---------------- ITEMS ----------------
+// ---------------- ITEMS (Alaab) ----------------
 function itemThumb(item){
   return item.imageDataUrl
     ? `<img class="thumb" src="${item.imageDataUrl}">`
@@ -324,18 +310,18 @@ function itemThumb(item){
 function renderItems(){
   fab.style.display = 'flex';
   fab.onclick = ()=>openAddItemModal();
-  content.innerHTML = `<h1>Items</h1>` + (db.items.length ? db.items.map(i=>`
+  content.innerHTML = `<h1>📦 Alaabta</h1>` + (db.items.length ? db.items.map(i=>`
     <div class="card-row">
       ${itemThumb(i)}
       <div class="info">
-        <div class="ttl">${i.name} ${i.quantityInHand<=i.lowStockThreshold ? '<span class="badge-status st-shipped">low</span>' : ''}</div>
-        <div class="sub">${i.sku||''} · Qty: ${i.quantityInHand}</div>
-        <div class="sub">Iibsi: ${money(i.costPrice)} + Xayeysiin: ${money(i.adCost)} → Iib: ${money(i.sellingPrice)}</div>
+        <div class="ttl">${i.name} ${i.quantityInHand<=i.lowStockThreshold ? '<span class="badge-status st-shipped">hoose</span>' : ''}</div>
+        <div class="sub">${i.sku||''} · Gacanta: ${i.quantityInHand}</div>
+        <div class="sub">Iibsi: ${money(i.costPrice)} + Xay: ${money(i.adCost)} → Iib: ${money(i.sellingPrice)}</div>
       </div>
       <div class="right">
-        <button class="btn btn-ghost" onclick="deleteItem(${i.id})">Delete</button>
+        <button class="btn btn-ghost" onclick="deleteItem(${i.id})">🗑️</button>
       </div>
-    </div>`).join('') : '<div class="panel" style="color:var(--muted); text-align:center;">No items yet — tap + to add one</div>');
+    </div>`).join('') : '<div class="panel" style="color:var(--muted); text-align:center;">Alaab ma jirto — taabo + si aad u darto</div>');
 }
 
 function openAddItemModal(){
@@ -343,9 +329,9 @@ function openAddItemModal(){
   backdrop.className = 'modal-backdrop';
   backdrop.innerHTML = `
     <div class="modal">
-      <h3>Ku dar alaab (Add item)</h3>
+      <h3>➕ Ku dar alaab</h3>
       <div class="form-row">
-        <label>Sawirka (Photo)</label>
+        <label>📷 Sawirka</label>
         <div class="img-picker">
           <img id="imgPreview" class="img-preview" src="">
           <label class="btn btn-ghost">Dooro sawir
@@ -353,19 +339,19 @@ function openAddItemModal(){
           </label>
         </div>
       </div>
-      <div class="form-row"><label>Magaca alaabta (Name)</label><input id="f-name"></div>
-      <div class="form-row"><label>SKU</label><input id="f-sku"></div>
-      <div class="form-row"><label>Nooca (Category)</label><input id="f-category" value="General"></div>
+      <div class="form-row"><label>🏷️ Magaca alaabta</label><input id="f-name" placeholder="Tusaale: Shaadh cas"></div>
+      <div class="form-row"><label>🔢 SKU</label><input id="f-sku" placeholder="SKU-001"></div>
+      <div class="form-row"><label>📂 Nooca</label><input id="f-category" value="General"></div>
       <div class="form-two">
-        <div class="form-row"><label>Tirada (Qty in hand)</label><input id="f-qty" type="number" value="0"></div>
-        <div class="form-row"><label>Low stock threshold</label><input id="f-low" type="number" value="10"></div>
+        <div class="form-row"><label>📦 Tirada gacanta</label><input id="f-qty" type="number" value="0"></div>
+        <div class="form-row"><label>⚠️ Heerka hoose</label><input id="f-low" type="number" value="10"></div>
       </div>
-      <div class="section-label">Qiimaha (Sh)</div>
+      <div class="section-label">💰 Qiimaha (KSh)</div>
       <div class="form-two">
-        <div class="form-row"><label>Qiimaha ay igu fadhido (Cost)</label><input id="f-cost" type="number" step="0.01" value="0"></div>
-        <div class="form-row"><label>Qiimaha xayeysiinta (Ads)</label><input id="f-ad" type="number" step="0.01" value="0"></div>
+        <div class="form-row"><label>Qiimaha iibsiga</label><input id="f-cost" type="number" step="0.01" value="0"></div>
+        <div class="form-row"><label>Xayeysiis (Ad cost)</label><input id="f-ad" type="number" step="0.01" value="0"></div>
       </div>
-      <div class="form-row"><label>Qiimaha aan ku iibinayo (Selling price)</label><input id="f-price" type="number" step="0.01" value="0"></div>
+      <div class="form-row"><label>💵 Qiimaha iibka</label><input id="f-price" type="number" step="0.01" value="0"></div>
       <div class="modal-actions">
         <button class="btn btn-ghost" id="cancelBtn">Cancel</button>
         <button class="btn btn-primary" id="saveBtn">Save</button>
@@ -388,7 +374,7 @@ function openAddItemModal(){
     db.items.push({
       id: db.nextIds.item++,
       name,
-      sku: backdrop.querySelector('#f-sku').value,
+      sku: backdrop.querySelector('#f-sku').value.trim() || `SKU-${String(db.nextIds.item).padStart(3,'0')}`,
       category: backdrop.querySelector('#f-category').value || 'General',
       quantityInHand: Number(backdrop.querySelector('#f-qty').value)||0,
       lowStockThreshold: Number(backdrop.querySelector('#f-low').value)||10,
@@ -404,17 +390,17 @@ function openAddItemModal(){
 }
 
 function deleteItem(id){
-  if(!confirm('Delete this item?')) return;
+  if(!confirm('Ma hubtaa inaad tirtirto alaabtan?')) return;
   db.items = db.items.filter(i=>i.id!==id);
   saveDB(db);
   renderItems();
 }
 
-// ---------------- PURCHASE ORDERS ----------------
+// ---------------- PURCHASE ORDERS (Iibsi) ----------------
 function renderPurchases(){
   fab.style.display = 'flex';
   fab.onclick = ()=>openOrderModal('purchase');
-  content.innerHTML = `<h1>Purchase Orders</h1>` + (db.purchaseOrders.length ? db.purchaseOrders.map(po=>`
+  content.innerHTML = `<h1>🛒 Iibsi (Purchase Orders)</h1>` + (db.purchaseOrders.length ? db.purchaseOrders.map(po=>`
     <div class="card-row">
       <div class="info">
         <div class="ttl">${po.poNumber} — ${po.supplier}</div>
@@ -422,9 +408,9 @@ function renderPurchases(){
       </div>
       <div class="right">
         <span class="badge-status st-${po.status}">${po.status}</span>
-        ${po.status!=='received' ? `<button class="btn btn-ghost" onclick="markReceived(${po.id})">Mark received</button>` : ''}
+        ${po.status!=='received' ? `<button class="btn btn-ghost" onclick="markReceived(${po.id})">✅ La helay</button>` : ''}
       </div>
-    </div>`).join('') : '<div class="panel" style="color:var(--muted); text-align:center;">No purchase orders yet — tap + to add one</div>');
+    </div>`).join('') : '<div class="panel" style="color:var(--muted); text-align:center;">Iibsi ma jiro — taabo + si aad u darto</div>');
 }
 
 function markReceived(id){
@@ -439,13 +425,13 @@ function markReceived(id){
   renderPurchases();
 }
 
-// ---------------- SALES ORDERS ----------------
+// ---------------- SALES ORDERS (Iib) ----------------
 const SO_FLOW = ['draft','confirmed','packed','shipped','invoiced'];
 
 function renderSales(){
   fab.style.display = 'flex';
   fab.onclick = ()=>openOrderModal('sales');
-  content.innerHTML = `<h1>Sales Orders</h1>` + (db.salesOrders.length ? db.salesOrders.map(so=>{
+  content.innerHTML = `<h1>🧾 Iib (Sales Orders)</h1>` + (db.salesOrders.length ? db.salesOrders.map(so=>{
     const nextIdx = SO_FLOW.indexOf(so.status)+1;
     const next = SO_FLOW[nextIdx];
     const customerLine = so.customerName ? `${so.customerName}${so.customerPhone ? ' · '+so.customerPhone : ''}` : so.channel;
@@ -453,14 +439,14 @@ function renderSales(){
       <div class="info">
         <div class="ttl">${so.soNumber} — ${customerLine}</div>
         <div class="sub">${so.date} · Qty: ${qtyOf(so)}</div>
-        ${so.paymentNumber ? `<div class="sub">Lacag: ${so.paymentNumber}</div>` : ''}
+        ${so.paymentNumber ? `<div class="sub">💳 ${so.paymentNumber}</div>` : ''}
       </div>
       <div class="right">
         <span class="badge-status st-${so.status}">${so.status}</span>
-        ${next ? `<button class="btn btn-ghost" onclick="advanceSo(${so.id}, '${next}')">Mark ${next}</button>` : ''}
+        ${next ? `<button class="btn btn-ghost" onclick="advanceSo(${so.id}, '${next}')">➡️ ${next}</button>` : ''}
       </div>
     </div>`;
-  }).join('') : '<div class="panel" style="color:var(--muted); text-align:center;">No sales orders yet — tap + to add one</div>');
+  }).join('') : '<div class="panel" style="color:var(--muted); text-align:center;">Iib ma jiro — taabo + si aad u darto</div>');
 }
 
 function advanceSo(id, status){
@@ -468,7 +454,7 @@ function advanceSo(id, status){
   if(!so) return;
   const oldStatus = so.status;
   so.status = status;
-  // stock is deducted the moment an order becomes "shipped" (delivery)
+  // Kaydka ayaa la dhima marka order-ka noqdo "shipped" (la soo saaray)
   if(status==='shipped' && oldStatus!=='shipped' && oldStatus!=='invoiced'){
     so.lines.forEach(line=>{
       const item = db.items.find(i=>i.id===line.itemId);
@@ -479,34 +465,34 @@ function advanceSo(id, status){
   renderSales();
 }
 
-// ---------------- shared order modal ----------------
+// ---------------- Order modal (Mid loogu talagalay iibsi iyo iib) ----------------
 function openOrderModal(kind){
   const isPO = kind==='purchase';
   if(db.items.length===0){
-    alert('Ku dar ugu yaraan hal alaab ka hor intaadan order sameyn.');
+    alert('Fadlan ku dar ugu yaraan hal alaab ka hor intaadan order sameyn.');
     return;
   }
   const backdrop = document.createElement('div');
   backdrop.className = 'modal-backdrop';
   backdrop.innerHTML = `
     <div class="modal">
-      <h3>${isPO?'New purchase order':'New sales order'}</h3>
+      <h3>${isPO ? '🛒 Iibsi cusub' : '🧾 Iib cusub'}</h3>
       ${isPO ? `
-        <div class="form-row"><label>Supplier</label><input id="f-party" value=""></div>
+        <div class="form-row"><label>🏢 Supplier</label><input id="f-party" placeholder="Magaca supplier-ka"></div>
       ` : `
-        <div class="form-row"><label>Channel</label><input id="f-party" value="Direct Sales"></div>
-        <div class="section-label">Xogta Macmiilka (Customer)</div>
-        <div class="form-row"><label>Magaca macmiilka</label><input id="f-cust-name" placeholder="Tusaale: Faarax Cali"></div>
+        <div class="form-row"><label>📡 Channel</label><input id="f-party" value="Direct Sales"></div>
+        <div class="section-label">👤 Macmiil</div>
+        <div class="form-row"><label>Magaca</label><input id="f-cust-name" placeholder="Tusaale: Faarax Cali"></div>
         <div class="form-two">
-          <div class="form-row"><label>Lambarka teléfoonka</label><input id="f-cust-phone" placeholder="61xxxxxxx"></div>
-          <div class="form-row"><label>Lambarka lacag-bixinta</label><input id="f-cust-payment" placeholder="EVC / Zaad"></div>
+          <div class="form-row"><label>📞 Tel</label><input id="f-cust-phone" placeholder="61xxxxxxx"></div>
+          <div class="form-row"><label>💳 Lacag</label><input id="f-cust-payment" placeholder="EVC / Zaad"></div>
         </div>
       `}
-      <div class="form-row"><label>Date</label><input id="f-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+      <div class="form-row"><label>📅 Taariikhda</label><input id="f-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
       <div class="form-row">
-        <label>Line items</label>
+        <label>📋 Liiska alaabta</label>
         <div id="lineItems"></div>
-        <button class="btn btn-ghost" id="addLineBtn" type="button" style="margin-top:6px; width:100%;">+ Add line</button>
+        <button class="btn btn-ghost" id="addLineBtn" type="button" style="margin-top:6px; width:100%;">+ Ku dar alaab</button>
       </div>
       <div class="modal-actions">
         <button class="btn btn-ghost" id="cancelBtn">Cancel</button>
@@ -518,10 +504,13 @@ function openOrderModal(kind){
   function addLine(){
     const row = document.createElement('div');
     row.className = 'line-item-row';
+    // Waxaan isticmaalaynaa sellingPrice iibsiga, costPrice iibsiga
+    const firstItem = db.items[0];
+    const defaultPrice = isPO ? firstItem.costPrice : firstItem.sellingPrice;
     row.innerHTML = `
-      <select class="line-item">${db.items.map(i=>`<option value="${i.id}" data-price="${isPO?i.costPrice:i.sellingPrice}">${i.name}</option>`).join('')}</select>
+      <select class="line-item">${db.items.map(i=>`<option value="${i.id}" data-price="${isPO ? i.costPrice : i.sellingPrice}">${i.name}</option>`).join('')}</select>
       <input class="line-qty" type="number" placeholder="Qty" value="1" min="1">
-      <input class="line-price" type="number" placeholder="${isPO?'Cost':'Price'}" step="0.01" value="${isPO?db.items[0].costPrice:db.items[0].sellingPrice}">
+      <input class="line-price" type="number" placeholder="${isPO ? 'Cost' : 'Price'}" step="0.01" value="${defaultPrice}">
     `;
     const sel = row.querySelector('.line-item');
     const priceInput = row.querySelector('.line-price');
@@ -537,10 +526,10 @@ function openOrderModal(kind){
   backdrop.querySelector('#saveBtn').onclick = ()=>{
     const lines = [...backdrop.querySelectorAll('.line-item-row')].map(row=>({
       itemId: Number(row.querySelector('.line-item').value),
-      qty: Number(row.querySelector('.line-qty').value),
-      [isPO?'cost':'price']: Number(row.querySelector('.line-price').value)
+      qty: Number(row.querySelector('.line-qty').value) || 0,
+      [isPO?'cost':'price']: Number(row.querySelector('.line-price').value) || 0
     }));
-    const party = backdrop.querySelector('#f-party').value;
+    const party = backdrop.querySelector('#f-party').value.trim();
     const date = backdrop.querySelector('#f-date').value;
 
     if(isPO){
